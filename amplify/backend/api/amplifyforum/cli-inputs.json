@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "amplifyforum",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/austyle/github/amplify-forum/amplify/backend/api/amplifyforum/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authamplifyforum903eb6d0"
+    }
+  }
+}
