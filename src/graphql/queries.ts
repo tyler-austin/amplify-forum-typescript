@@ -1,3 +1,4 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -7,14 +8,6 @@ export const getTopic = /* GraphQL */ `
       id
       title
       comments {
-        items {
-          id
-          topicId
-          content
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       createdAt
@@ -24,14 +17,15 @@ export const getTopic = /* GraphQL */ `
   }
 `;
 export const listTopics = /* GraphQL */ `
-  query ListTopics($filter: ModelTopicFilterInput, $limit: Int, $nextToken: String) {
+  query ListTopics(
+    $filter: ModelTopicFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listTopics(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         title
-        comments {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
@@ -49,9 +43,6 @@ export const getComment = /* GraphQL */ `
       topic {
         id
         title
-        comments {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
@@ -63,19 +54,16 @@ export const getComment = /* GraphQL */ `
   }
 `;
 export const listComments = /* GraphQL */ `
-  query ListComments($filter: ModelCommentFilterInput, $limit: Int, $nextToken: String) {
+  query ListComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         topicId
         content
-        topic {
-          id
-          title
-          createdAt
-          updatedAt
-          owner
-        }
         createdAt
         updatedAt
         owner
