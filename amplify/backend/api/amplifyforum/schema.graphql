@@ -3,17 +3,19 @@ type Topic
   @auth(
     rules: [
       { allow: owner }
-      {
-        allow: groups
-        groups: ["Moderator"]
-        operations: [read, update, delete]
-      }
+      { allow: groups, groups: ["Moderator"], operations: [read, update, delete] }
       { allow: private, operations: [read] }
     ]
   ) {
   id: ID!
   title: String!
-  comments: [Comment] @hasMany(indexName: "topicComments", fields: ["id"])
+  content: String!
+  createdAt: String
+  comments: [Comment] @hasMany(indexName: "commentsByTopicId", fields: ["id"])
+  commentCount: Int @function(name: "commentCount-${env}")
+  votes: [TopicVote] @hasMany(indexName: "votesByTopicId", fields: ["id"])
+  voteCount: Int @function(name: "voteCount-${env}")
+  currentVote: String @function(name: "currentVote-${env}")
 }
 
 type Comment
@@ -21,23 +23,66 @@ type Comment
   @auth(
     rules: [
       { allow: owner }
-      {
-        allow: groups
-        groups: ["Moderator"]
-        operations: [read, update, delete]
-      }
+      { allow: groups, groups: ["Moderator"], operations: [read, update, delete] }
       { allow: private, operations: [read] }
     ]
   ) {
   id: ID!
-  topicId: ID! @index(name: "topicComments", sortKeyFields: ["content"])
-  content: String!
+  topicId: ID! @index(name: "commentsByTopicId", sortKeyFields: ["voteCount"])
   topic: Topic @belongsTo(fields: ["topicId"])
+  content: String!
+  votes: [CommentVote!] @hasMany(indexName: "votesByCommentId", fields: ["id"])
+  voteCount: Int @function(name: "voteCount-${env}")
+  currentVote: String @function(name: "currentVote-${env}")
 }
 
-type Subscription {
-  onCreateCommentByTopicId(topicId: String!): Comment
-    @aws_subscribe(mutations: ["createComment"])
-  onDeleteCommentByTopicId(topicId: String!): Comment
-    @aws_subscribe(mutations: ["deleteComment"])
+type TopicVote
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Moderator"], operations: [read, update, delete] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  owner: String!
+  topicId: ID! @index(name: "votesByTopicId", sortKeyFields: ["id"])
+  topic: Topic @belongsTo(fields: ["topicId"])
+  vote: VoteType!
+}
+
+type CommentVote
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Moderator"], operations: [read, update, delete] }
+      { allow: private, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  owner: String!
+  commentId: ID! @index(name: "votesByCommentId", sortKeyFields: ["id"])
+  comment: Comment @belongsTo(fields: ["commentId"])
+  vote: VoteType!
+}
+
+input VoteInput {
+  type: VoteType!
+  id: ID!
+}
+
+enum VoteType {
+  up
+  down
+}
+
+type Mutation {
+  upVoteTopic(topicId: String): TopicVote @function(name: "voting-${env}")
+  downVoteTopic(topicId: String): TopicVote @function(name: "voting-${env}")
+  removeVoteTopic(topicId: String): TopicVote @function(name: "voting-${env}")
+  upVoteComment(commentId: String): CommentVote @function(name: "voting-${env}")
+  downVoteComment(commentId: String): CommentVote @function(name: "voting-${env}")
+  removeVoteComment(commentId: String): CommentVote @function(name: "voting-${env}")
 }

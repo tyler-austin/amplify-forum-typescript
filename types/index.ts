@@ -1,7 +1,6 @@
-import { GraphQLResult } from '@aws-amplify/api';
-
 export type TopicFormData = {
   title: string;
+  content: string;
 };
 
 export type CommentFormData = {
@@ -10,30 +9,50 @@ export type CommentFormData = {
 
 export type Topic = {
   id: string;
+  owner: string;
   title: string;
-  comments: {
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  comments?: {
     items: Comment[];
     nextToken?: string | null;
   };
-  createdAt: string;
-  updatedAt: string;
-  owner?: string | null;
+  commentCount: number;
+  voteCount: number;
+  currentVote: 'up' | 'down' | null;
 };
 
 export type Comment = {
   id: string;
-  topicId: string;
+  owner: string;
   content: string;
-  topic: Topic;
   createdAt: string;
   updatedAt: string;
-  owner?: string | null;
+  topic?: Topic;
+  topicId?: string;
+  voteCount: number;
+  currentVote: 'up' | 'down' | null;
 };
 
-export type GraphQLError = {
-  errors: Error[];
+type Vote = {
+  id: string;
+  createdAt: string;
+  owner: string;
+  vote: VoteType;
 };
 
-export type SubscriptionNext<T> = {
-  value: GraphQLResult<T>;
+export enum VoteType {
+  up,
+  down,
+}
+
+export type TopicVote = Vote & {
+  topicId: string;
+  topic: Topic;
+};
+
+export type CommentVote = Vote & {
+  commentId: string;
+  comment: Comment;
 };

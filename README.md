@@ -1,34 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WorkshopAmplifyForum - `@amzn/workshop-amplify-forum`
 
-## Getting Started
-
-First, run the development server:
+This is an TypeScript adaptation of AWS Workshop [Build a message forum with Next.js and Amplify](https://catalog.us-east-1.prod.workshops.aws/workshops/9291fed8-6668-4a29-b2c2-5f66710b0fb0/en-US/)
 
 ```bash
-npm run dev
-# or
-yarn dev
+$ bws create -n WorkshopAmplifyForum
+$ cd WorkshopAmplifyForum
+$ bws use -p WorkshopAmplifyForum -vs austyle/development
+$ cd src/WorkshopAmplifyForum
+$ brazil-build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Install Amplify CLI
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+$ npm install -g @aws-amplify/cli
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+2. Configure Amplify CLI to use your AWS credentials
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+$ amplify configure
 
-## Learn More
+- Specify the AWS Region: ap-northeast-2
+- Specify the username of the new IAM user: amplify-cli-user
+> In the AWS Console, click Next: Permissions, Next: Tags, Next: Review,
+> & Create User to create the new IAM user. Then return to the command
+> line & press Enter.
+- Enter the access key of the newly created user:
+? accessKeyId: (<YOUR_ACCESS_KEY_ID>)
+? secretAccessKey: (<YOUR_SECRET_ACCESS_KEY>)
+- Profile Name: amplify-cli-user
+```
 
-To learn more about Next.js, take a look at the following resources:
+3. Initialize Amplify project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+$ amplify init
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+? Do you want to use an existing environment? Yes
+? Choose the environment you would like to use: tsdev
+```
 
-## Deploy on Vercel
+4. Deploy Amplify project
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+$ amplify push --y
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. Start Amplify project locally
+
+```bash
+$ brazil-build dev
+```
+
+6. Open browser and go to http://localhost:3000
+
+7. Create an account and sign in
+
+### Helpful Amplify commands
+
+```bash
+$ amplify status
+$ amplify console
+$ amplify publish
+```

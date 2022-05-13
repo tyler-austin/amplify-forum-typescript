@@ -3,12 +3,22 @@
   "serviceConfiguration": {
     "apiName": "amplifyforum",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/Users/austyle/github/amplify-forum-typescript/amplify/backend/api/amplifyforum/schema.graphql",
+    "gqlSchemaPath": "/Volumes/workplace/WorkshopAmplifyForum/src/WorkshopAmplifyForum/amplify/backend/api/amplifyforum/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authamplifyforum903eb6d0"
     },
     "conflictResolution": {},
-    "additionalAuthTypes": []
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-04-22T16:13:18.782Z",
+        "keyDescription": ""
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ]
   }
 }

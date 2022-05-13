@@ -42,6 +42,8 @@ amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/.temp
+amplify/team-provider-info.json
+amplify/**/README.md
 build/
 dist/
 node_modules/
